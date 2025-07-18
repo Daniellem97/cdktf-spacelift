@@ -10,13 +10,13 @@ class ImportStack extends TerraformStack {
 
     new SpaceliftProvider(this, "spacelift", {});
 
-    // 1. Generate the import config
-    Space.generateConfigForImport(this, "x", "x-01K0EVTW7HW9M520EMKD7K93HQ");
+    // ✅ Avoid conflict by using a unique ID
+    Space.generateConfigForImport(this, "import-x", "x-01K0EVTW7HW9M520EMKD7K93HQ");
 
-    // 2. Define the resource to satisfy the import block
+    // ✅ Define resource with a different ID
     new Space(this, "x", {
-      name: "x", // use correct name
-      parentSpaceId: "root", // or correct parent
+      name: "x",
+      parentSpaceId: "root",
       inheritEntities: true,
     });
   }
