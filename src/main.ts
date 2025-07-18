@@ -35,13 +35,12 @@ class Infra extends TerraformStack {
     });
   }
 
-  private setupXStacks(): void {
-    const xSpace = new DataSpaceliftSpaceByPath(this, "x", {
-      spacePath: "root/x",
-    });
+private setupXStacks(): void {
+  const xSpace = new DataSpaceliftSpaceByPath(this, "x-space-import", {
+    spacePath: "root/x",
+  });
 
-    new ManagementMiscStack(this, "x-stack", xSpace);
-  }
+  new ManagementMiscStack(this, "x-stack", xSpace);
 }
 
 const app = new App();
