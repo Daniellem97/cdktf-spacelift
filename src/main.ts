@@ -10,8 +10,15 @@ class ImportStack extends TerraformStack {
 
     new SpaceliftProvider(this, "spacelift", {});
 
-    // This tells CDKTF to emit import instructions for Terraform
+    // 1. Generate the import config
     Space.generateConfigForImport(this, "x", "x-01K0EVTW7HW9M520EMKD7K93HQ");
+
+    // 2. Define the resource to satisfy the import block
+    new Space(this, "x", {
+      name: "x", // use correct name
+      parentSpaceId: "root", // or correct parent
+      inheritEntities: true,
+    });
   }
 }
 
