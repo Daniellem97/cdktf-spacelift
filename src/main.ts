@@ -6,7 +6,6 @@ import { SPACE_IMPORT_MAP } from "./space-import-map.js";
 import { ManagementMiscStack } from "./stacks/management-misc-stack.js";
 import { SpaceliftProvider } from "../.gen/providers/spacelift/provider/index.js";
 
-
 class Infra extends TerraformStack {
   public rootSpace: DataSpaceliftSpaceByPath;
 
@@ -35,14 +34,17 @@ class Infra extends TerraformStack {
     });
   }
 
-private setupXStacks(): void {
-  const xSpace = new DataSpaceliftSpaceByPath(this, "x-space-import", {
-    spacePath: "root/x",
-  });
+  private setupXStacks(): void {
+    const xSpace = new DataSpaceliftSpaceByPath(this, "x-space-import", {
+      spacePath: "root/x",
+    });
 
-  new ManagementMiscStack(this, "x-stack", xSpace);
+    new ManagementMiscStack(this, "x-stack", xSpace);
+  }
 }
 
+// ✅ These lines must be OUTSIDE the class definition
 const app = new App();
 new Infra(app, "infra");
 app.synth();
+
