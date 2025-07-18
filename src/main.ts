@@ -8,28 +8,23 @@ export class Infra extends TerraformStack {
   constructor(scope: Construct, id: string) {
     super(scope, id);
 
-    // ✅ Register the provider
+    // ✅ Register provider
     new SpaceliftProvider(this, "spacelift", {});
 
-    // ✅ Create root space reference
+    // ✅ Look up the existing root space
     const rootSpace = new DataSpaceliftSpaceByPath(this, "root-space", {
       spacePath: "root",
     });
 
-    // ✅ Define the resource with matching construct ID "x"
-    const spaceX = new Space(this, "x", {
-      name: "x", // Name is optional for import, but helpful
+    // ✅ Define a construct with ID "x" (can be anything)
+    const existingXSpace = new Space(this, "x", {
+      name: "x",
       parentSpaceId: rootSpace.id,
       inheritEntities: true,
     });
 
-    // ✅ Tell CDKTF this maps to an existing resource (Terraform address + real ID)
-    spaceX.overrideLogicalId("x-01K0EVTW7HW9M520EMKD7K93HQ");
-
-    // Alternatively, you can use moveToId if dynamically building graph
-    // spaceX.moveToId("spacelift_space.existing_target");
-
-    // You can now create stacks or attach policies using this imported space
+    // ✅ Instruct CDKTF not to create but to manage an existing resource
+    existingXSpace.moveToId("x-01K0EVTW7HW9M520EMKD7K93HQ");
   }
 }
 
