@@ -10,16 +10,19 @@ import { SpaceliftProvider } from "../.gen/providers/spacelift/provider.js";
 class Infra extends TerraformStack {
   public rootSpace: DataSpaceliftSpaceByPath;
 
-  constructor(scope: Construct, id: string) {
-    super(scope, id);
+constructor(scope: Construct, id: string) {
+  super(scope, id);
 
-    this.rootSpace = new DataSpaceliftSpaceByPath(this, "root-space", {
-      spacePath: "root",
-    });
+  // ✅ Required: register the provider!
+  new SpaceliftProvider(this, "spacelift", {});
 
-    this.moveSpaceIds();
-    this.setupXStacks();
-  }
+  this.rootSpace = new DataSpaceliftSpaceByPath(this, "root-space", {
+    spacePath: "root",
+  });
+
+  this.moveSpaceIds();
+  this.setupXStacks();
+}
 
   private moveSpaceIds(): void {
     Object.entries(SPACE_IMPORT_MAP).forEach(([spaceId, { spacePath, targetId }]) => {
