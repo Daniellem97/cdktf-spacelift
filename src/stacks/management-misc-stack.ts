@@ -1,6 +1,6 @@
 import { Construct } from "constructs";
 import { TerraformStack } from "cdktf";
-import { DataSpaceliftSpaceByPath } from "@cdktf/provider-spacelift";
+import { Space } from "../../.gen/providers/spacelift/space/index.js";
 
 export class ManagementMiscStack extends TerraformStack {
   constructor(scope: Construct, id: string, space: DataSpaceliftSpaceByPath) {
