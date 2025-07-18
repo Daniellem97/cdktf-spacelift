@@ -7,45 +7,41 @@ import { ManagementMiscStack } from "./stacks/management-misc-stack.js";
 import { SpaceliftProvider } from "../.gen/providers/spacelift/provider/index.js";
 
 
-
-
 class Infra extends TerraformStack {
   public rootSpace: DataSpaceliftSpaceByPath;
 
-constructor(scope: Construct, id: string) {
-  super(scope, id);
+  constructor(scope: Construct, id: string) {
+    super(scope, id);
 
-  // ✅ Required: register the provider!
-  new SpaceliftProvider(this, "spacelift", {});
+    new SpaceliftProvider(this, "spacelift", {});
 
-  this.rootSpace = new DataSpaceliftSpaceByPath(this, "root-space", {
-    spacePath: "root",
-  });
-
-  this.moveSpaceIds();
-  this.setupXStacks();
-}
-
-private moveSpaceIds(): void {
-  Object.entries(SPACE_IMPORT_MAP).forEach(([spaceId, { spacePath, targetId }]) => {
-    // Will be: new Space(this, "x", {...})
-    const space = new Space(this, spaceId, {
-      name: spacePath,
-      parentSpaceId: this.rootSpace.id,
-      inheritEntities: true,
+    this.rootSpace = new DataSpaceliftSpaceByPath(this, "root-space", {
+      spacePath: "root",
     });
 
-    space.moveToId(`spacelift_space.${targetId}`);
-  });
-}
+    this.moveSpaceIds();
+    this.setupXStacks();
+  }
 
-private setupXStacks(): void {
-  // 👇 Also uses "x" as construct ID, triggering the conflict
-  const xSpace = new DataSpaceliftSpaceByPath(this, "x", {
-    spacePath: "root/x",
-  });
+  private moveSpaceIds(): void {
+    Object.entries(SPACE_IMPORT_MAP).forEach(([spaceId, { spacePath, targetId }]) => {
+      const space = new Space(this, spaceId, {
+        name: spacePath,
+        parentSpaceId: this.rootSpace.id,
+        inheritEntities: true,
+      });
 
-  new ManagementMiscStack(this, "x-stack", xSpace);
+      space.moveToId(`spacelift_space.${targetId}`);
+    });
+  }
+
+  private setupXStacks(): void {
+    const xSpace = new DataSpaceliftSpaceByPath(this, "x", {
+      spacePath: "root/x",
+    });
+
+    new ManagementMiscStack(this, "x-stack", xSpace);
+  }
 }
 
 const app = new App();
