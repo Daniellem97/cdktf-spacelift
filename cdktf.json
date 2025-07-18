@@ -1,6 +1,6 @@
 {
+  "app": "npx tsx src/main.ts",
   "language": "typescript",
-  "app": "npx ts-node --esm src/main.ts",
   "codeMakerOutput": ".gen",
 "terraformProviders": [
   "spacelift-io/spacelift@~> 1.27"
