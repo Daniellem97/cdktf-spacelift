@@ -1,9 +1,9 @@
 {
-  "app": "npm run --silent synth",
+  "app": "npm run --silent compile && node dist/src/main.js",
   "language": "typescript",
   "codeMakerOutput": ".gen",
-"terraformProviders": [
-  "spacelift-io/spacelift@~> 1.27"
-],
+  "terraformProviders": [
+    "spacelift-io/spacelift@~> 1.27"
+  ],
   "projectId": "spacelift-move-test"
 }
