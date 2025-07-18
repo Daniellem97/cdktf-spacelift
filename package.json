@@ -1,21 +1,21 @@
 {
-  "name": "cdktf-init",
+  "name": "cdktf-spacelift",
   "version": "1.0.0",
-  "main": "main.js",
-  "types": "main.ts",
+  "main": "dist/main.js",
+  "types": "src/main.ts",
   "license": "MPL-2.0",
   "private": true,
-"scripts": {
-  "get": "cdktf get",
-  "build": "tsc",
-  "synth": "npx ts-node --esm src/main.ts",
-  "compile": "tsc --pretty",
-  "watch": "tsc -w",
-  "test": "jest",
-  "test:watch": "jest --watch",
-  "upgrade": "npm i cdktf@latest cdktf-cli@latest",
-  "upgrade:next": "npm i cdktf@next cdktf-cli@next"
-},
+  "scripts": {
+    "get": "cdktf get",
+    "build": "tsc",
+    "compile": "tsc",
+    "synth": "npm run --silent compile && node dist/main.js",
+    "watch": "tsc -w",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "upgrade": "npm i cdktf@latest cdktf-cli@latest",
+    "upgrade:next": "npm i cdktf@next cdktf-cli@next"
+  },
   "engines": {
     "node": ">=20.9"
   },
