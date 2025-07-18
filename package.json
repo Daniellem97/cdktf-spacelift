@@ -8,7 +8,7 @@
 "scripts": {
   "get": "cdktf get",
   "build": "tsc",
-  "synth": "ts-node src/main.ts",
+  "synth": "npx tsx src/main.ts",
   "compile": "tsc --pretty",
   "watch": "tsc -w",
   "test": "jest",
