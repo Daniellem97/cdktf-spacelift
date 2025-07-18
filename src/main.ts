@@ -22,6 +22,12 @@ class Infra extends TerraformStack {
     this.setupXStacks();
   }
 
+const space = new Space(this, "x", {
+  name: "x",
+  parentSpaceId: this.rootSpace.id,
+  inheritEntities: true,
+});
+
   private moveSpaceIds(): void {
     Object.entries(SPACE_IMPORT_MAP).forEach(([spaceId, { spacePath, targetId }]) => {
       const space = new Space(this, spaceId, {
