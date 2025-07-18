@@ -4,7 +4,7 @@ import { DataSpaceliftSpaceByPath } from "../.gen/providers/spacelift/data-space
 import { Construct } from "constructs";
 import { SPACE_IMPORT_MAP } from "./space-import-map.js";
 import { ManagementMiscStack } from "./stacks/management-misc-stack.js";
-import { SpaceliftProvider } from "../.gen/providers/spacelift/provider.js";
+import { SpaceliftProvider } from "../.gen/providers/spacelift/provider/index.js";
 
 
 class Infra extends TerraformStack {
