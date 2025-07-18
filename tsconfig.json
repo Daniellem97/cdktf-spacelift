@@ -8,7 +8,7 @@
     "lib": [
       "es2018"
     ],
-    "module": "CommonJS",
+    "module": "ESNext",
     "noEmitOnError": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": true,
