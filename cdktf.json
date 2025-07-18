@@ -1,5 +1,5 @@
 {
-  "app": "npx tsx src/main.ts",
+  "app": "npm run --silent synth",
   "language": "typescript",
   "codeMakerOutput": ".gen",
 "terraformProviders": [
