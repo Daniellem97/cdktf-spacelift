@@ -1,0 +1,16 @@
+{
+  "name": "cdktf-spacelift",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "synth": "cdktf synth"
+  },
+  "dependencies": {
+    "cdktf": "^0.20.5",
+    "@cdktf/provider-spacelift": "^0.4.0",
+    "constructs": "^10.3.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.2.0"
+  }
+}
