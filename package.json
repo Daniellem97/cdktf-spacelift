@@ -8,7 +8,7 @@
 "scripts": {
   "get": "cdktf get",
   "build": "tsc",
-  "synth": "NODE_OPTIONS='--loader ts-node/esm' ts-node-esm src/main.ts",
+  "synth": "ts-node src/main.ts",
   "compile": "tsc --pretty",
   "watch": "tsc -w",
   "test": "jest",
