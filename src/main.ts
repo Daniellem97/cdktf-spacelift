@@ -1,30 +1,28 @@
-import { App, TerraformStack } from "cdktf";
+import { App, TerraformStack, TerraformOutput, TerraformProvider } from "cdktf";
+import { Construct } from "constructs";
 import { Space } from "../.gen/providers/spacelift/space/index.js";
 import { DataSpaceliftSpaceByPath } from "../.gen/providers/spacelift/data-spacelift-space-by-path/index.js";
-import { Construct } from "constructs";
 import { SpaceliftProvider } from "../.gen/providers/spacelift/provider/index.js";
 
-export class Infra extends TerraformStack {
+class Infra extends TerraformStack {
   constructor(scope: Construct, id: string) {
     super(scope, id);
 
-    // ✅ Register provider
     new SpaceliftProvider(this, "spacelift", {});
 
-    // ✅ Look up the existing root space
-    const rootSpace = new DataSpaceliftSpaceByPath(this, "root-space", {
+    const root = new DataSpaceliftSpaceByPath(this, "root", {
       spacePath: "root",
     });
 
-    // ✅ Define a construct with ID "x" (can be anything)
-    const existingXSpace = new Space(this, "x", {
+    const imported = new Space(this, "x", {
       name: "x",
-      parentSpaceId: rootSpace.id,
+      parentSpaceId: root.id,
       inheritEntities: true,
     });
 
-    // ✅ Instruct CDKTF not to create but to manage an existing resource
-    existingXSpace.moveToId("x-01K0EVTW7HW9M520EMKD7K93HQ");
+    // ✅ THIS is what marks the resource as "imported"
+    imported.overrideLogicalId("x");
+    imported.addOverride("import", "x-01K0EVTW7HW9M520EMKD7K93HQ");
   }
 }
 
