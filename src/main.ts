@@ -1,6 +1,6 @@
 import { App, TerraformStack } from "cdktf";
 import { Space } from "../.gen/providers/spacelift/space";
-import { DataSpaceliftSpaceByPath } from "../.gen/providers/spacelift/data-spacelift-space-by-path";
+import { DataSpaceliftSpaceByPath } from "../.gen/providers/spacelift/data-spacelift-space-by-path/index.js";
 import { Construct } from "constructs";
 import { SPACE_IMPORT_MAP } from "./space-import-map.js";
 import { ManagementMiscStack } from "./stacks/management-misc-stack.js";
