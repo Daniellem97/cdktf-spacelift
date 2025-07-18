@@ -2,11 +2,8 @@
   "language": "typescript",
   "app": "npx ts-node src/main.ts",
   "codeMakerOutput": ".gen",
-  "terraformProviders": [
-    {
-      "name": "spacelift-io/spacelift",
-      "version": "~> 1.27"
-    }
-  ],
+"terraformProviders": [
+  "spacelift-io/spacelift@~> 1.27"
+],
   "projectId": "spacelift-move-test"
 }
