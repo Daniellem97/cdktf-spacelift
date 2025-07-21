@@ -7,44 +7,21 @@ import { Space } from "../.gen/providers/spacelift/space/index.js";
 import { ManagementMiscStack } from "./stacks/management-misc-stack.js";
 import { SPACE_IMPORT_MAP } from "./space-import-map.js";
 
-class Infra extends TerraformStack {
-  public rootSpace: DataSpaceliftSpaceByPath;
-  private movedSpaces: Record<string, Space> = {};
-
+class ImportStack extends TerraformStack {
   constructor(scope: Construct, id: string) {
     super(scope, id);
 
     new SpaceliftProvider(this, "spacelift", {});
 
-    this.rootSpace = new DataSpaceliftSpaceByPath(this, "root-space", {
-      spacePath: "root",
+    const importedSpace = new Space(this, "x", {
+      // Do NOT set other config — we want to match existing!
     });
 
-    this.moveSpaceIds();
-    this.setupXStacks();
-  }
-
-  private moveSpaceIds(): void {
-    Object.entries(SPACE_IMPORT_MAP).forEach(([key, { spacePath, targetId }]) => {
-      const space = new Space(this, key, {
-        name: spacePath,
-        parentSpaceId: this.rootSpace.id,
-        inheritEntities: true,
-      });
-
-      space.overrideLogicalId(targetId);
-
-      this.movedSpaces[spacePath] = space;
-    });
-  }
-
-  private setupXStacks(): void {
-    const xSpace = this.movedSpaces["root/x"];
-
-    new ManagementMiscStack(this, "x-stack", xSpace);
+    // ✅ This tells Terraform to import the existing resource into state
+    importedSpace.importFrom("x-01K0EVTW7HW9M520EMKD7K93HQ");
   }
 }
 
 const app = new App();
-new Infra(app, "infra");
+new ImportStack(app, "import-x");
 app.synth();
