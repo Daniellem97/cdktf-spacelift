@@ -32,7 +32,7 @@ class Infra extends TerraformStack {
         inheritEntities: true,
       });
 
-      space.moveToId(`spacelift_space.${targetId}`);
+      space.overrideLogicalId(targetId);
 
       this.movedSpaces[spacePath] = space;
     });
