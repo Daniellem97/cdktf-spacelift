@@ -13,12 +13,15 @@ class ImportStack extends TerraformStack {
 
     new SpaceliftProvider(this, "spacelift", {});
 
-    const importedSpace = new Space(this, "x", {
-      // Do NOT set other config — we want to match existing!
+    // Create a stub with fake config, then override and import
+    const space = new Space(this, "x", {
+      name: "placeholder", // dummy value just to satisfy the type checker
+      parentSpaceId: "root", // dummy, won't be applied
+      inheritEntities: false, // dummy
     });
 
-    // ✅ This tells Terraform to import the existing resource into state
-    importedSpace.importFrom("x-01K0EVTW7HW9M520EMKD7K93HQ");
+    space.overrideLogicalId("x"); // match the logical name
+    space.importFrom("x-01K0EVTW7HW9M520EMKD7K93HQ");
   }
 }
 
