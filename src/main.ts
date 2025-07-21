@@ -1,27 +1,50 @@
-import { App, TerraformStack, TerraformOutput, TerraformProvider } from "cdktf";
+import { App, TerraformStack } from "cdktf";
 import { Construct } from "constructs";
-import { Space } from "../.gen/providers/spacelift/space/index.js";
-import { DataSpaceliftSpaceByPath } from "../.gen/providers/spacelift/data-spacelift-space-by-path/index.js";
 import { SpaceliftProvider } from "../.gen/providers/spacelift/provider/index.js";
+import { DataSpaceliftSpaceByPath } from "../.gen/providers/spacelift/data-spacelift-space-by-path/index.js";
+import { Space } from "../.gen/providers/spacelift/space/index.js";
 
-class ImportStack extends TerraformStack {
+import { ManagementMiscStack } from "./stacks/management-misc-stack.js";
+import { SPACE_IMPORT_MAP } from "./space-import-map.js";
+
+class Infra extends TerraformStack {
+  public rootSpace: DataSpaceliftSpaceByPath;
+  private movedSpaces: Record<string, Space> = {};
+
   constructor(scope: Construct, id: string) {
     super(scope, id);
 
     new SpaceliftProvider(this, "spacelift", {});
 
-    // ✅ Avoid conflict by using a unique ID
-    Space.generateConfigForImport(this, "import-x", "x-01K0EVTW7HW9M520EMKD7K93HQ");
-
-    // ✅ Define resource with a different ID
-    new Space(this, "x", {
-      name: "x",
-      parentSpaceId: "root",
-      inheritEntities: true,
+    this.rootSpace = new DataSpaceliftSpaceByPath(this, "root-space", {
+      spacePath: "root",
     });
+
+    this.moveSpaceIds();
+    this.setupXStacks();
+  }
+
+  private moveSpaceIds(): void {
+    Object.entries(SPACE_IMPORT_MAP).forEach(([key, { spacePath, targetId }]) => {
+      const space = new Space(this, key, {
+        name: spacePath,
+        parentSpaceId: this.rootSpace.id,
+        inheritEntities: true,
+      });
+
+      space.moveToId(`spacelift_space.${targetId}`);
+
+      this.movedSpaces[spacePath] = space;
+    });
+  }
+
+  private setupXStacks(): void {
+    const xSpace = this.movedSpaces["root/x"];
+
+    new ManagementMiscStack(this, "x-stack", xSpace);
   }
 }
 
 const app = new App();
-new ImportStack(app, "import-x");
+new Infra(app, "infra");
 app.synth();
